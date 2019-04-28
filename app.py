@@ -17,8 +17,9 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if client.user in message.mentions:
-        # 自分にメンションが来た場合のみ反応する
+    if isinstance(message.channel, discord.DMChannel) \
+        or client.user in message.mentions:
+        # 個別チャットもしくは自分にメンションが来た場合のみ反応する
 
         bot = DocomoChatBot(os.getenv('DOCOMO_API_KEY'), os.getenv('DOCOMO_APP_ID'))
 
