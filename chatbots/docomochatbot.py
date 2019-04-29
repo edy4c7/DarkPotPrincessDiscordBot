@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime
 from .chatbot import ChatBot
 
 class DocomoChatBot(ChatBot):
@@ -8,7 +9,8 @@ class DocomoChatBot(ChatBot):
     def __init__(self, api_key, app_id):
         self._api_url = DocomoChatBot.api_url + api_key
         self._app_id = app_id
-    
+        self._app_recv_time = datetime.now()
+
 
     def talk(self, message):
         headers = {
@@ -28,10 +30,14 @@ class DocomoChatBot(ChatBot):
                     't': 'kansai'
                 }
             },
-            'appRecvTime': '2019-04-23 00:00:00',
-            'appSendTime': '2019-04-23 00:01:00'
+            'appRecvTime': "{0:%Y-%m-%d %H:%M:%S}".format(self._app_recv_time),
+            'appSendTime': "{0:%Y-%m-%d %H:%M:%S}".format(datetime.now()),
         }
 
         response = requests.post(self._api_url, json.dumps(data), headers=headers)
+
+        # 前回受信日時を更新
+        self._app_recv_time = datetime.strptime(response.json()['serverSendTime'], 
+            '%Y-%m-%d %H:%M:%S')
 
         return response.json()['systemText']['expression']

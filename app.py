@@ -6,6 +6,7 @@ from chatbots import DocomoChatBot
 load_dotenv()
 
 client = discord.Client()
+bot = DocomoChatBot(os.getenv('DOCOMO_API_KEY'), os.getenv('DOCOMO_APP_ID'))
 
 @client.event
 async def on_ready():
@@ -20,9 +21,6 @@ async def on_message(message):
     if isinstance(message.channel, discord.DMChannel) \
         or client.user in message.mentions:
         # 個別チャットもしくは自分にメンションが来た場合のみ反応する
-
-        bot = DocomoChatBot(os.getenv('DOCOMO_API_KEY'), os.getenv('DOCOMO_APP_ID'))
-
         await message.channel.send(bot.talk(message.content))
 
 if __name__ == "__main__":
