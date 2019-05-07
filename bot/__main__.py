@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 import discord
-from chatbots import DocomoChatBot
+from .chatbots import DocomoChatBot
 
 load_dotenv()
 
@@ -23,5 +23,4 @@ async def on_message(message):
         # 個別チャットもしくは自分にメンションが来た場合のみ反応する
         await message.channel.send(bot.talk(message.content))
 
-if __name__ == "__main__":
-    client.run(os.getenv('DISCORD_TOKEN'))
+client.run(os.getenv('DISCORD_TOKEN'))
