@@ -3,14 +3,15 @@ import json
 from datetime import datetime
 from .chatbot import ChatBot
 
+
 class DocomoChatBot(ChatBot):
-    api_url = 'https://api.apigw.smt.docomo.ne.jp/naturalChatting/v1/dialogue?APIKEY='
+    api_url = 'https://api.apigw.smt.docomo.ne.jp/' \
+        'naturalChatting/v1/dialogue?APIKEY='
 
     def __init__(self, api_key, app_id):
         self._api_url = DocomoChatBot.api_url + api_key
         self._app_id = app_id
         self._app_recv_time = datetime.now()
-
 
     def talk(self, message):
         headers = {
@@ -34,10 +35,12 @@ class DocomoChatBot(ChatBot):
             'appSendTime': "{0:%Y-%m-%d %H:%M:%S}".format(datetime.now()),
         }
 
-        response = requests.post(self._api_url, json.dumps(data), headers=headers)
+        response = requests.post(self._api_url,
+                                 json.dumps(data), headers=headers)
 
         # 前回受信日時を更新
-        self._app_recv_time = datetime.strptime(response.json()['serverSendTime'], 
-            '%Y-%m-%d %H:%M:%S')
+        self._app_recv_time = \
+            datetime.strptime(response.json()['serverSendTime'],
+                              '%Y-%m-%d %H:%M:%S')
 
         return response.json()['systemText']['expression']

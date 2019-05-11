@@ -1,4 +1,5 @@
-from abc import ABCMeta,abstractmethod
+from abc import ABCMeta, abstractmethod
+
 
 class ChatBot(metaclass=ABCMeta):
     @abstractmethod
