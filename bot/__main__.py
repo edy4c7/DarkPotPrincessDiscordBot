@@ -12,6 +12,8 @@ bot = DocomoChatBot(os.getenv('DOCOMO_API_KEY'), os.getenv('DOCOMO_APP_ID'))
 @client.event
 async def on_ready():
     print('we have logged in as {0.user}'.format(client))
+    ch = client.get_channel(int(os.getenv('DISCORD_CHANNEL_ID')))
+    await ch.send('おはよう')
 
 
 @client.event
